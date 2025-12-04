@@ -66,7 +66,7 @@ export const fileTools: Tool[] = [
     title: 'PDF Merger',
     description: 'Combine multiple PDF files into a single document with ease.',
     icon: FilePlus2,
-    href: '#',
+    href: '/pdf-merger',
   },
   {
     id: 'pdf-splitter',
@@ -87,13 +87,6 @@ export const fileTools: Tool[] = [
     title: 'Word to PDF',
     description: 'Convert Microsoft Word documents into professional PDFs.',
     icon: FileDigit,
-    href: '#',
-  },
-  {
-    id: 'png-jpg-converter',
-    title: 'PNG <> JPG Converter',
-    description: 'Quickly convert between PNG and JPG image formats.',
-    icon: Replace,
     href: '#',
   },
   {
