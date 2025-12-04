@@ -77,6 +77,7 @@ export default function Home() {
                 <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
                 <Link href="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
                 <Link href="/disclaimer" className="hover:text-primary transition-colors">Disclaimer</Link>
+                <Link href="/refund-and-cancellation" className="hover:text-primary transition-colors">Refund & Cancellation</Link>
               </nav>
             </div>
           </div>
