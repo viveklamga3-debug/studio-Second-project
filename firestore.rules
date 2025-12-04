@@ -1,0 +1,133 @@
+/**
+ * Core Philosophy: This ruleset enforces a strict user-ownership model. All user-specific data,
+ * such as files and task history, is nested within a user's private document tree. This ensures
+ * that users can only ever access their own information. Publicly readable data, like subscription
+ * plans, is stored in a separate top-level collection.
+ *
+ * Data Structure: The data is organized hierarchically. The root of all private user data is the
+ * /users/{userId} document. All related user content, like files and task history, are stored in
+ * subcollections under this path (e.g., /users/{userId}/files/{fileId}). This structure allows for
+ * efficient and secure path-based authorization. Subscription plans are stored in a flat,
+ * top-level collection /subscriptions.
+ *
+ * Key Security Decisions:
+ * - Default Deny: All paths are closed by default. Access is granted explicitly.
+ * - User Privacy: Users can only read and write data within their own /users/{userId} document
+ *   and its subcollections.
+ * - No User Enumeration: Listing documents in the top-level /users collection is explicitly
+ *   forbidden to prevent leaking user information.
+ * - Read-Only Public Data: The /subscriptions collection is publicly readable by anyone but
+ *   cannot be modified by any client. This data should be managed by administrators through a
+ *   trusted backend or the Firebase Console.
+ * - Prototyping Flexibility: These rules focus on authorization (who can access what) and do not
+ *   enforce a strict data schema. This allows the application's data models to evolve without
+ *   requiring constant rule changes. Only fields critical for authorization, like `userId`, are
+ *   validated.
+ *
+ * Denormalization for Authorization: The security model relies on the path structure for ownership
+ * checks (e.g., matching {userId} in the path to the user's auth UID). This avoids costly `get()`
+ * calls to other documents for authorization, leading to faster and more scalable rules.
+ *
+ * Structural Segregation: User-private data (files, task history) is structurally separated into
+ * user-owned subcollections. This is inherently more secure and performant for queries than mixing
+ * public and private data in a single collection.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Checks if a user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Checks if the currently authenticated user's UID matches the provided userId.
+     * This is the primary function for verifying document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks if the user is the owner AND the document already exists.
+     * Used for safe updates and deletes to prevent acting on non-existent data.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    // ------------------------------------------------------------------------
+    // Collection Rules
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Manages user profile documents.
+     * @path /users/{userId}
+     * @allow (create) A new user creating their own profile document.
+     * @deny  (list) Any user trying to list all documents in the /users collection.
+     * @deny  (update) A user trying to modify another user's profile.
+     * @principle Restricts access to a user's own data tree and enforces relational integrity.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Prevent user enumeration.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Defines the available subscription plans. This data is public but not writable.
+     * @path /subscriptions/{subscriptionId}
+     * @allow (get, list) Any user, signed in or not, can view the subscription plans.
+     * @deny  (create, update, delete) All clients are forbidden from modifying subscription plans.
+     * @principle Manages globally-readable configuration data that should only be changed by an administrator.
+     */
+    match /subscriptions/{subscriptionId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Stores metadata for files owned by a specific user.
+     * @path /users/{userId}/files/{fileId}
+     * @allow (create) An authenticated user creating a file record in their own subcollection.
+     * @deny  (get) A user trying to read file metadata from another user's subcollection.
+     * @deny  (create) A user trying to create a file record with a mismatched `userId` field.
+     * @principle Enforces strict path-based ownership for all user-generated content.
+     */
+    match /users/{userId}/files/{fileId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Stores the history of tasks performed by a specific user.
+     * @path /users/{userId}/taskHistory/{taskId}
+     * @allow (list) An authenticated user listing their own task history.
+     * @deny  (get) A user trying to read a specific task from another user's history.
+     * @deny  (create) A user trying to create a task history record with a mismatched `userId` field.
+     * @principle Enforces strict path-based ownership for all user-generated content.
+     */
+    match /users/{userId}/taskHistory/{taskId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}

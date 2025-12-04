@@ -1,0 +1,264 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the MediaMaster Lite application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "subscriptionId": {
+          "type": "string",
+          "description": "Reference to Subscription plan. (Relationship: Subscription 1:1 User)"
+        },
+        "storageUsedBytes": {
+          "type": "number",
+          "description": "Amount of cloud storage used by the user in bytes."
+        },
+        "themeMode": {
+          "type": "string",
+          "description": "User's preferred theme mode (light, dark, auto)."
+        }
+      },
+      "required": [
+        "id",
+        "email"
+      ]
+    },
+    "Subscription": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Subscription",
+      "type": "object",
+      "description": "Represents a subscription plan for MediaMaster Lite.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the subscription plan."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the subscription plan (Free, Pro, Pro+)."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the subscription plan per month."
+        },
+        "taskLimit": {
+          "type": "number",
+          "description": "Maximum number of tasks allowed per day (-1 for unlimited)."
+        },
+        "fileSizeLimitBytes": {
+          "type": "number",
+          "description": "Maximum file size allowed for uploads in bytes."
+        },
+        "upscalingEnabled": {
+          "type": "boolean",
+          "description": "Indicates whether 2x AI upscaling is enabled for this plan."
+        },
+        "priorityQueue": {
+          "type": "string",
+          "description": "Queue type (normal, faster, priority)"
+        },
+        "adFree": {
+          "type": "boolean",
+          "description": "Indicates whether ads are disabled for this plan."
+        },
+        "cloudStorageLimitBytes": {
+          "type": "number",
+          "description": "Maximum cloud storage allowed in bytes."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "price"
+      ]
+    },
+    "File": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "File",
+      "type": "object",
+      "description": "Represents a file stored in the cloud storage.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the file."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N File)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Original name of the file."
+        },
+        "sizeBytes": {
+          "type": "number",
+          "description": "Size of the file in bytes."
+        },
+        "uploadDate": {
+          "type": "string",
+          "description": "Date and time when the file was uploaded.",
+          "format": "date-time"
+        },
+        "storagePath": {
+          "type": "string",
+          "description": "Path to the file in the cloud storage."
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "MIME type of the file."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "name",
+        "sizeBytes",
+        "uploadDate",
+        "storagePath",
+        "mimeType"
+      ]
+    },
+    "TaskHistory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "TaskHistory",
+      "type": "object",
+      "description": "Represents a task performed by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the task history entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N TaskHistory)"
+        },
+        "toolName": {
+          "type": "string",
+          "description": "Name of the tool used for the task (e.g., Image Compressor, PDF Merge)."
+        },
+        "inputFiles": {
+          "type": "array",
+          "description": "References to Files used in the task. (Relationship: File 1:N TaskHistory)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outputFiles": {
+          "type": "array",
+          "description": "References to Files created in the task. (Relationship: File 1:N TaskHistory)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "taskDate": {
+          "type": "string",
+          "description": "Date and time when the task was performed.",
+          "format": "date-time"
+        },
+        "parameters": {
+          "type": "string",
+          "description": "JSON string containing task-specific parameters (e.g., compression level, resize dimensions)."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "toolName",
+        "taskDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile data. Includes denormalized 'subscriptionId', 'fileSizeLimitBytes', and 'upscalingEnabled' from the Subscription to enable authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/subscriptions/{subscriptionId}",
+        "definition": {
+          "entityName": "Subscription",
+          "schema": {
+            "$ref": "#/backend/entities/Subscription"
+          },
+          "description": "Stores subscription plan details.",
+          "params": [
+            {
+              "name": "subscriptionId",
+              "description": "The unique identifier for the subscription plan."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/files/{fileId}",
+        "definition": {
+          "entityName": "File",
+          "schema": {
+            "$ref": "#/backend/entities/File"
+          },
+          "description": "Stores file metadata for each user. Enforces path-based ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "fileId",
+              "description": "The unique identifier for the file."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/taskHistory/{taskId}",
+        "definition": {
+          "entityName": "TaskHistory",
+          "schema": {
+            "$ref": "#/backend/entities/TaskHistory"
+          },
+          "description": "Stores task history entries for each user. Enforces path-based ownership.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "taskId",
+              "description": "The unique identifier for the task history entry."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure prioritizes authorization independence and QAPs using denormalization and structural segregation. User data is stored under `/users/{userId}` for private data access. Subscriptions are in a top-level collection `/subscriptions` as they are relatively static and referenced by users. Files and TaskHistory are stored as subcollections under `/users/{userId}` to leverage path-based ownership. This eliminates the need for `get()` calls in security rules to validate ownership. Subscription details such as `fileSizeLimitBytes`, and `upscalingEnabled` are denormalized into the `/users/{userId}` document to avoid reads in security rules when checking file upload limits or enabling features. The `TaskHistory` is also placed as subcollection to `/users/{userId}` to take advantage of path based security and ownership, therefore, supporting the QAPs."
+  }
+}
