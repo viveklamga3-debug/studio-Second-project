@@ -2,6 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Cookie Policy - MediaMaestro",
+    description: "Learn how MediaMaestro uses cookies to improve your experience, manage sessions, and serve ads.",
+};
+
 
 export default function CookiePolicyPage() {
   return (

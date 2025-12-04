@@ -2,6 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Terms & Conditions - MediaMaestro",
+    description: "Terms and conditions for using the MediaMaestro website and services.",
+};
 
 export default function TermsAndConditionsPage() {
   return (

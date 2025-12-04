@@ -2,6 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Privacy Policy - MediaMaestro",
+    description: "Privacy Policy for MediaMaestro. Understand how we collect, use, and protect your data.",
+};
 
 export default function PrivacyPolicyPage() {
   return (

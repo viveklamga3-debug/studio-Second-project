@@ -2,6 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Refund & Cancellation Policy - MediaMaestro",
+    description: "Read the refund and cancellation policy for MediaMaestro subscriptions.",
+};
 
 export default function RefundAndCancellationPage() {
   return (
