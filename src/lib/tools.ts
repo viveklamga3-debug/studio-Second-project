@@ -34,7 +34,7 @@ export const imageTools: Tool[] = [
     title: 'Passport Photo Maker',
     description: 'Create official passport photos for any country automatically.',
     icon: UserSquare,
-    href: '#',
+    href: '/passport-photo-maker',
   },
   {
     id: 'image-resizer',
