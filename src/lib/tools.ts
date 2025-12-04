@@ -27,7 +27,7 @@ export const imageTools: Tool[] = [
     title: 'Image Compressor',
     description: 'Compress JPG, PNG, or WebP images with custom quality settings.',
     icon: Minimize,
-    href: '#',
+    href: '/image-compressor',
   },
   {
     id: 'passport-photo-maker',
