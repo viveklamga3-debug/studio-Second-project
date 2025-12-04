@@ -72,9 +72,11 @@ export default function Home() {
             <AdPlaceholder className="h-24 w-full mb-8" title="Footer Ad" />
             <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
               <p>&copy; {new Date().getFullYear()} MediaMaestro. All rights reserved.</p>
-              <nav className="flex items-center gap-4 mt-4 sm:mt-0">
+              <nav className="flex items-center gap-4 mt-4 sm:mt-0 flex-wrap justify-center">
                 <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-                {/* Add other footer links here if needed */}
+                <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
+                <Link href="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
+                <Link href="/disclaimer" className="hover:text-primary transition-colors">Disclaimer</Link>
               </nav>
             </div>
           </div>

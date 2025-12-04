@@ -19,64 +19,59 @@ export default function PrivacyPolicyPage() {
           <CardTitle className="text-3xl">Privacy Policy</CardTitle>
         </CardHeader>
         <CardContent className="prose prose-stone dark:prose-invert max-w-none">
+          <p>Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
           <p>
-            This Privacy Policy describes how MediaMaestro ("we", "us", or "our")
-            collects, uses, and discloses your information when you use our
-            website (the "Service").
+            Welcome to MediaMaestro (“we”, “our”, “us”). This Privacy Policy explains how we collect, use, and protect your information when you use mediamestro.com.
           </p>
 
-          <h2>Information We Collect</h2>
+          <h2>1. Information We Collect</h2>
+          <p>We collect the following types of data:</p>
+          <h3>A. Information You Provide</h3>
+          <ul>
+            <li>Email address (for login or support)</li>
+            <li>Account details (free, Pro, Pro+)</li>
+            <li>Payment details (processed securely via third-party gateways)</li>
+          </ul>
+          <h3>B. Automatically Collected Data</h3>
+          <ul>
+            <li>IP address</li>
+            <li>Browser type</li>
+            <li>Device details</li>
+            <li>Usage & analytics data</li>
+            <li>Cookies and tracking technologies</li>
+          </ul>
           <p>
-            We may collect information that you provide to us directly, such as
-            when you contact us. The majority of our tools (like image and file
-            processors) operate entirely within your browser. The files you
-            select for processing are NOT uploaded to our servers.
+            For our file and image processing tools, all operations are performed locally in your browser. Your files are never uploaded to our servers, ensuring your data remains private.
           </p>
 
-          <h2>Log Data and Analytics</h2>
-          <p>
-            Like many site operators, we collect information that your browser
-            sends whenever you visit our Service ("Log Data"). This Log Data may
-            include information such as your computer's Internet Protocol
-            ("IP") address, browser type, browser version, the pages of our
-            Service that you visit, the time and date of your visit, the time
-            spent on those pages, and other statistics. We use this data to
-            improve our service.
-          </p>
+          <h2>2. How We Use Your Information</h2>
+          <p>We use your data to:</p>
+          <ul>
+            <li>Provide and improve our SaaS services</li>
+            <li>Secure user accounts</li>
+            <li>Handle payments (via third-party payment processors)</li>
+            <li>Show personalized ads (for free users only)</li>
+            <li>Analyze traffic and performance</li>
+            <li>Provide customer support</li>
+          </ul>
+          
+          <h2>3. Google AdSense & Third-Party Cookies</h2>
+          <p>Our website uses Google AdSense to serve ads to free users. Google may use cookies, web beacons, and device identifiers to serve personalized or non-personalized ads, prevent invalid clicks, and improve the user ad experience.</p>
+          <p>Users may opt-out of personalized advertising by visiting Google's Ad Settings: <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">https://www.google.com/settings/ads</a>.</p>
 
-          <h2>Cookies and Advertising</h2>
-          <p>
-            We use cookies to store information about visitors' preferences and
-            to personalize or customize our web page content based upon
-            visitors' browser type or other information that the visitor sends.
-          </p>
-          <p>
-            We also use third-party advertisements on MediaMaestro to support
-            our site. Some of these advertisers may use technology such as
-            cookies and web beacons when they advertise on our site, which will
-            also send these advertisers (such as Google through the Google
-            AdSense program) information including your IP address, your ISP,
-            the browser you used to visit our site, and in some cases, whether
-            you have Flash installed. This is generally used for geotargeting
-            purposes or showing certain ads based on specific sites visited.
-          </p>
-          <h3>Google AdSense & DoubleClick DART Cookie</h3>
-          <p>
-            Google, as a third-party vendor, uses cookies to serve ads on our
-            Service. Google's use of the DART cookie enables it to serve ads to
-            our users based on their visit to our Service and other sites on the
-            Internet. Users may opt out of the use of the DART cookie by
-            visiting the Google ad and content network privacy policy.
-          </p>
+          <h2>4. Data Protection & Security</h2>
+          <p>We implement security measures like SSL/HTTPS, encryption, and secure servers to protect your data. We NEVER sell your personal information.</p>
 
-          <h2>Your Choices</h2>
-          <p>
-            You can instruct your browser to refuse all cookies or to indicate
-            when a cookie is being sent. However, if you do not accept cookies,
-            you may not be able to use some portions of our Service.
-          </p>
+          <h2>5. GDPR Rights (EU Users)</h2>
+          <p>If you are an EU resident, you have the right to access, correct, or request deletion of your personal data. You can also opt-out of tracking. To exercise these rights, please contact us at support@mediamestro.com.</p>
 
-          <h2>Changes to This Privacy Policy</h2>
+          <h2>6. CCPA (California Users)</h2>
+          <p>If you are a California resident, you have the right to request disclosure or deletion of your stored data. We do not "sell" personal data as defined by the CCPA. To exercise your rights, contact us at support@mediamestro.com.</p>
+
+          <h2>7. Children’s Privacy</h2>
+          <p>Our service does not target and is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13.</p>
+          
+          <h2>8. Changes to This Privacy Policy</h2>
           <p>
             We may update our Privacy Policy from time to time. We will notify
             you of any changes by posting the new Privacy Policy on this page.
@@ -84,11 +79,8 @@ export default function PrivacyPolicyPage() {
             changes.
           </p>
 
-          <h2>Contact Us</h2>
-          <p>
-            If you have any questions about this Privacy Policy, please contact
-            us.
-          </p>
+          <h2>9. Contact Us</h2>
+          <p>For questions regarding this policy, please contact us at: 📩 support@mediamestro.com</p>
         </CardContent>
       </Card>
     </div>
