@@ -11,6 +11,7 @@ import {
   FileDigit,
   Replace,
   FileArchive,
+  RefreshCw,
 } from 'lucide-react';
 
 export interface Tool {
@@ -51,11 +52,11 @@ export const imageTools: Tool[] = [
     href: '/image-cropper',
   },
   {
-    id: 'image-format-converter',
+    id: 'image-converter',
     title: 'Image Format Converter',
     description: 'Convert between PNG, JPG, and WebP formats in bulk.',
-    icon: FileImage,
-    href: '#',
+    icon: RefreshCw,
+    href: '/image-converter',
   },
 ];
 
