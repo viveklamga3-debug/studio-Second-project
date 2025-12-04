@@ -71,7 +71,7 @@ export const imageTools: Tool[] = [
     title: 'Image Enhancer (AI)',
     description: 'Upscale and enhance image quality and resolution using AI.',
     icon: Sparkles,
-    href: '#',
+    href: '/image-enhancer',
   },
 ];
 
