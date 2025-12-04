@@ -1,12 +1,10 @@
 import type { LucideIcon } from 'lucide-react';
 import {
   Minimize,
-  Scan,
   UserSquare,
   Expand,
   Crop,
   FileImage,
-  Sparkles,
   FilePlus2,
   FileMinus2,
   FileText,
@@ -30,13 +28,6 @@ export const imageTools: Tool[] = [
     description: 'Compress JPG, PNG, or WebP images with custom quality settings.',
     icon: Minimize,
     href: '#',
-  },
-  {
-    id: 'background-remover',
-    title: 'Background Remover (AI)',
-    description: 'Instantly remove the background from any image with a single click.',
-    icon: Scan,
-    href: '/background-remover',
   },
   {
     id: 'passport-photo-maker',
@@ -65,13 +56,6 @@ export const imageTools: Tool[] = [
     description: 'Convert between PNG, JPG, and WebP formats in bulk.',
     icon: FileImage,
     href: '#',
-  },
-  {
-    id: 'image-enhancer',
-    title: 'Image Enhancer (AI)',
-    description: 'Upscale and enhance image quality and resolution using AI.',
-    icon: Sparkles,
-    href: '/image-enhancer',
   },
 ];
 
