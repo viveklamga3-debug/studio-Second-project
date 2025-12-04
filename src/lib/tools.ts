@@ -80,20 +80,20 @@ export const fileTools: Tool[] = [
     title: 'PDF to Word',
     description: 'Convert PDF documents to editable Microsoft Word files.',
     icon: FileText,
-    href: '#',
+    href: '/pdf-to-word',
   },
   {
     id: 'word-to-pdf',
     title: 'Word to PDF',
     description: 'Convert Microsoft Word documents into professional PDFs.',
     icon: FileDigit,
-    href: '#',
+    href: '/word-to-pdf',
   },
   {
     id: 'zip-tools',
     title: 'ZIP Tools',
     description: 'Create and extract ZIP archives directly in your browser.',
     icon: FileArchive,
-    href: '#',
+    href: '/zip-tools',
   },
 ];
