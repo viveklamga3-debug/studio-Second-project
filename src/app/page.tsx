@@ -68,7 +68,16 @@ export default function Home() {
       </div>
 
        <footer className="container mx-auto px-4 py-8">
-          <AdPlaceholder className="h-24 w-full" title="Footer Ad" />
+          <div className="border-t pt-8">
+            <AdPlaceholder className="h-24 w-full mb-8" title="Footer Ad" />
+            <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
+              <p>&copy; {new Date().getFullYear()} MediaMaestro. All rights reserved.</p>
+              <nav className="flex items-center gap-4 mt-4 sm:mt-0">
+                <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+                {/* Add other footer links here if needed */}
+              </nav>
+            </div>
+          </div>
       </footer>
     </div>
   );
