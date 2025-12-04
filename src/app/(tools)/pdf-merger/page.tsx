@@ -178,12 +178,20 @@ export default function PDFMergerPage() {
           <div
             onDragOver={handleDragOver}
             onDrop={handleDrop}
+            onClick={triggerFileInput}
             className="flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary transition-colors"
-             onClick={triggerFileInput}
           >
             <FilePlus2 className="w-8 h-8 text-muted-foreground" />
             <p className="mt-2 text-md font-semibold">Add more files</p>
             <p className="text-sm text-muted-foreground">Drag & drop or click</p>
+             <Input
+                ref={fileInputRef}
+                type="file"
+                className="hidden"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                multiple
+              />
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
