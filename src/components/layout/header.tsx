@@ -90,7 +90,7 @@ export function Header() {
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Wand2 className="h-6 w-6 text-primary" />
           <span className="font-bold sm:inline-block font-headline">
-            MediaMaestro
+            Toolnes 
           </span>
         </Link>
         <nav className="flex items-center space-x-6 text-sm font-medium">
