@@ -45,7 +45,7 @@ export default function Home() {
     <div className="w-full">
       <header className="text-center py-12 md:py-20 border-b">
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter text-primary font-headline">
-          MediaMaestro
+          Toolnes 
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground">
           Your complete suite of simple, fast, and free tools for images and files.
@@ -71,7 +71,7 @@ export default function Home() {
           <div className="border-t pt-8">
             <AdPlaceholder className="h-24 w-full mb-8" title="Footer Ad" />
             <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
-              <p>&copy; {new Date().getFullYear()} MediaMaestro. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} Toolnes. All rights reserved.</p>
               <nav className="flex items-center gap-4 mt-4 sm:mt-0 flex-wrap justify-center">
                 <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
                 <Link href="/terms-and-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
