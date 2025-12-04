@@ -48,7 +48,7 @@ export const imageTools: Tool[] = [
     title: 'Image Cropper',
     description: 'Crop images with preset aspect ratios or freeform selection.',
     icon: Crop,
-    href: '#',
+    href: '/image-cropper',
   },
   {
     id: 'image-format-converter',
