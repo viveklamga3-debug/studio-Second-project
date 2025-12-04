@@ -41,7 +41,7 @@ export const imageTools: Tool[] = [
     title: 'Image Resizer',
     description: 'Resize images by pixel or percentage while maintaining aspect ratio.',
     icon: Expand,
-    href: '#',
+    href: '/image-resizer',
   },
   {
     id: 'image-cropper',
