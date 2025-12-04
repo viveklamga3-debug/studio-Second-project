@@ -4,6 +4,7 @@ import {cn} from '@/lib/utils';
 import {ThemeProvider} from '@/components/theme-provider';
 import {Toaster} from '@/components/ui/toaster';
 import {MainLayout} from '@/components/layout/main-layout';
+import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'MediaMaestro - Free Image & File Tools',
@@ -32,7 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <MainLayout>{children}</MainLayout>
+          <FirebaseClientProvider>
+            <MainLayout>{children}</MainLayout>
+          </FirebaseClientProvider>
           <Toaster />
         </ThemeProvider>
       </body>
