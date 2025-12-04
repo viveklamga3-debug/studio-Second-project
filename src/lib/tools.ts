@@ -73,7 +73,7 @@ export const fileTools: Tool[] = [
     title: 'PDF Splitter',
     description: 'Extract pages from a PDF or split it into multiple files.',
     icon: FileMinus2,
-    href: '#',
+    href: '/pdf-splitter',
   },
   {
     id: 'pdf-to-word',
