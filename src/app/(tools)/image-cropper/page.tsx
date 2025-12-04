@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-import { Upload, Download, RefreshCw, Scissors, AspectRatio } from "lucide-react";
+import { Upload, Download, RefreshCw, Scissors, Ratio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,63 @@ const aspectRatios = [
     { name: '16:9 (Widescreen)', value: 16 / 9 },
 ];
 
+function useDebounceEffect(
+  fn: () => void,
+  waitTime: number,
+  deps: any[],
+) {
+  useEffect(() => {
+    const t = setTimeout(() => {
+      fn();
+    }, waitTime);
+
+    return () => {
+      clearTimeout(t);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+}
+
+async function canvasPreview(
+  image: HTMLImageElement,
+  canvas: HTMLCanvasElement,
+  crop: Crop,
+) {
+  const ctx = canvas.getContext('2d')
+
+  if (!ctx) {
+    throw new Error('No 2d context')
+  }
+
+  const scaleX = image.naturalWidth / image.width
+  const scaleY = image.naturalHeight / image.height
+  const pixelRatio = window.devicePixelRatio
+
+  canvas.width = Math.floor(crop.width * scaleX * pixelRatio)
+  canvas.height = Math.floor(crop.height * scaleY * pixelRatio)
+
+  ctx.scale(pixelRatio, pixelRatio)
+  ctx.imageSmoothingQuality = 'high'
+
+  const cropX = crop.x * scaleX
+  const cropY = crop.y * scaleY
+
+  ctx.save()
+  
+  // 5) Move the crop origin to the canvas origin (0,0)
+  ctx.translate(-cropX, -cropY)
+  ctx.drawImage(
+    image,
+    0,
+    0,
+    image.naturalWidth,
+    image.naturalHeight,
+  )
+
+  ctx.restore()
+}
+
+
 export default function ImageCropperPage() {
   const [imgSrc, setImgSrc] = useState('');
   const [crop, setCrop] = useState<Crop>();
@@ -41,6 +98,26 @@ export default function ImageCropperPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const { toast } = useToast();
+
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+        )
+      }
+    },
+    100,
+    [completedCrop],
+  )
+
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -101,7 +178,8 @@ export default function ImageCropperPage() {
     const image = imgRef.current;
     const previewCanvas = previewCanvasRef.current;
     if (!image || !previewCanvas || !completedCrop) {
-      throw new Error('Crop canvas does not exist');
+      toast({ variant: 'destructive', title: 'Error', description: 'Crop is not complete.' });
+      return;
     }
 
     const scaleX = image.naturalWidth / image.width;
@@ -113,7 +191,8 @@ export default function ImageCropperPage() {
     );
     const ctx = offscreen.getContext('2d');
     if (!ctx) {
-      throw new Error('No 2d context');
+      toast({ variant: 'destructive', title: 'Error', description: 'Could not get canvas context.' });
+      return;
     }
     
     ctx.drawImage(
@@ -121,7 +200,7 @@ export default function ImageCropperPage() {
       completedCrop.x * scaleX,
       completedCrop.y * scaleY,
       completedCrop.width * scaleX,
-      completedor.height * scaleY,
+      completedCrop.height * scaleY,
       0,
       0,
       offscreen.width,
@@ -221,7 +300,7 @@ export default function ImageCropperPage() {
                   <Label htmlFor="aspect">Aspect Ratio</Label>
                   <Select onValueChange={handleAspectChange} value={aspect ? String(aspect) : 'Freeform'}>
                     <SelectTrigger id="aspect">
-                       <AspectRatio className="mr-2"/>
+                       <Ratio className="mr-2"/>
                       <SelectValue placeholder="Select aspect ratio" />
                     </SelectTrigger>
                     <SelectContent>
@@ -243,20 +322,20 @@ export default function ImageCropperPage() {
                 <CardContent>
                     <canvas
                         ref={previewCanvasRef}
-                        className={cn("w-full h-auto border rounded-md", !completedCrop && "hidden")}
+                        className={cn("w-full h-auto border rounded-md", !completedCrop?.width && "hidden")}
                         style={{
                             objectFit: 'contain',
                             width: completedCrop ? '100%' : 0,
                             height: completedCrop ? 'auto' : 0,
-                            aspectRatio: completedCrop ? completedCrop.width / completedCrop.height : 1,
+                            aspectRatio: completedCrop && completedCrop.width > 0 ? completedCrop.width / completedCrop.height : 1,
                         }}
                     />
-                     {!completedCrop && <p className="text-muted-foreground text-center">Your cropped image will appear here.</p>}
+                     {(!completedCrop || completedCrop.width === 0) && <p className="text-muted-foreground text-center">Your cropped image will appear here.</p>}
                 </CardContent>
             </Card>
             
             <div className="space-y-4">
-              <Button onClick={handleDownload} disabled={!completedCrop} className="w-full">
+              <Button onClick={handleDownload} disabled={!completedCrop?.width} className="w-full">
                 <Download className="mr-2" />
                 Download Cropped Image
               </Button>
@@ -270,101 +349,4 @@ export default function ImageCropperPage() {
       )}
     </div>
   );
-}
-
-// Effect to draw on the preview canvas when the crop is complete
-function useDebounceEffect(
-  fn: () => void,
-  waitTime: number,
-  deps: any[],
-) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const dependencies = [...deps, waitTime, fn];
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const callback = () => {
-    fn();
-  };
-
-  const [timeoutId, setTimeoutId] = useState<number | null>(null);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedFn = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    setTimeoutId(window.setTimeout(callback, waitTime));
-  };
-  
-  useState(() => {
-    debouncedFn();
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
-}
-
-
-useDebounceEffect(
-    async () => {
-      if (
-        completedCrop?.width &&
-        completedCrop?.height &&
-        imgRef.current &&
-        previewCanvasRef.current
-      ) {
-        // We use canvasPreview as it's much faster than img workflow.
-        canvasPreview(
-          imgRef.current,
-          previewCanvasRef.current,
-          completedCrop,
-        )
-      }
-    },
-    100,
-    [completedCrop],
-)
-
-async function canvasPreview(
-  image: HTMLImageElement,
-  canvas: HTMLCanvasElement,
-  crop: Crop,
-) {
-  const ctx = canvas.getContext('2d')
-
-  if (!ctx) {
-    throw new Error('No 2d context')
-  }
-
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
-  const pixelRatio = window.devicePixelRatio
-
-  canvas.width = Math.floor(crop.width * scaleX * pixelRatio)
-  canvas.height = Math.floor(crop.height * scaleY * pixelRatio)
-
-  ctx.scale(pixelRatio, pixelRatio)
-  ctx.imageSmoothingQuality = 'high'
-
-  const cropX = crop.x * scaleX
-  const cropY = crop.y * scaleY
-
-  const centerX = image.naturalWidth / 2
-  const centerY = image.naturalHeight / 2
-
-  ctx.save()
-  
-  ctx.translate(-cropX, -cropY)
-  ctx.drawImage(
-    image,
-    0,
-    0,
-    image.naturalWidth,
-    image.naturalHeight,
-  )
-
-  ctx.restore()
 }
