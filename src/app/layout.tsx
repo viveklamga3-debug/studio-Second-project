@@ -25,7 +25,8 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <!-- Google tag (gtag.js) -->
+      </head>
+      <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CBKLFW2W5E"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -34,7 +35,6 @@ export default function RootLayout({
 
   gtag('config', 'G-CBKLFW2W5E');
 </script>
-      </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <ThemeProvider
           attribute="class"
