@@ -5,6 +5,7 @@ import {ThemeProvider} from '@/components/theme-provider';
 import {Toaster} from '@/components/ui/toaster';
 import {MainLayout} from '@/components/layout/main-layout';
 import { FirebaseClientProvider } from '@/firebase';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: 'Toolnes - Free Image & File Tools',
@@ -38,6 +39,7 @@ export default function RootLayout({
           </FirebaseClientProvider>
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
