@@ -7,7 +7,7 @@ import {MainLayout} from '@/components/layout/main-layout';
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'MediaMaestro - Free Image & File Tools',
+  title: 'Toolnes - Free Image & File Tools',
   description: 'Compress, convert, and edit your images and files with our suite of free, fast, and easy-to-use online tools. Built for speed and simplicity.',
 };
 
@@ -19,6 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CBKLFW2W5E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CBKLFW2W5E');
+</script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
