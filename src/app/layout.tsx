@@ -19,14 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <!-- Google tag (gtag.js) -->
+        <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CBKLFW2W5E"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -35,6 +28,7 @@ export default function RootLayout({
 
   gtag('config', 'G-CBKLFW2W5E');
 </script>
+      </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <ThemeProvider
           attribute="class"
