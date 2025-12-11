@@ -27,16 +27,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-
-      <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJPK6YCWGG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZJPK6YCWGG');
-</script>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
         <ThemeProvider
           attribute="class"
@@ -50,6 +40,16 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <Analytics />
+
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZJPK6YCWGG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZJPK6YCWGG');
+</script>
       </body>
     </html>
   );
