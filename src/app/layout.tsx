@@ -42,6 +42,10 @@ export default function RootLayout({
         </ThemeProvider>
         <Analytics />
       </body>
+      <script
+  type="text/javascript"
+  src="https://pl28242101.effectivegatecpm.com/6e/ae/73/6eae73d85d4619ec41155e62a242b05f.js"
+></script>
     </html>
   );
 }
